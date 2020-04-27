@@ -3,24 +3,13 @@ import java.util.*;
 public class connection
 {
 	public static Connection conn;
-
 	public static void main(String [] args) throws ClassNotFoundException, SQLException
 	{
 		try
 		{
 			//Class.forName ("org.postgresql.Driver"); // load server
 			conn = DriverManager.getConnection( "jdbc:postgresql://[24.14.236.184]:5432/project", "postgres", "postgres");
-			Statement stmt = conn.createStatement(); // create Statement object...
-			ResultSet rset = stmt.executeQuery("select employeeid from employee");
-			while(rset.next())
-			{
-				System.out.println(rset.getString("employeeid"));
-			}
-
-
-
-			stmt.close(); // close Statement and release resources
-			conn.close(); // close Connection and release resources
+			
 		}
 		catch (SQLException sqle)
 		{
@@ -43,20 +32,24 @@ public class connection
 		String username = sc.nextLine();
 		System.out.println("Please enter you password:");
 		String psswrd = sc.nextLine();
-		
-		System.out.println("What would you like to do?");
-		System.out.println("1: Insert data");
-		System.out.println("2: Delete data");
-		System.out.println("3: Update table");
-		
-		int choice = sc.nextInt();
-		System.out.println("What table would you like to choose?");
-		String table = sc.nextLine();
-		System.out.println("Which column would you like to work with?");
-		String column = sc.nextLine();
+
 		boolean flag = true;
+		String table = null;
+		
 		while(flag)
 		{
+			System.out.println("What would you like to do?");
+			System.out.println("1: Insert data");
+			System.out.println("2: Delete data");
+			System.out.println("3: Update table");
+			System.out.println("4: Reporting and Analytics");
+			int choice = sc.nextInt();
+			
+			if(choice == 1 || choice == 2)
+			{
+				System.out.println("What table would you like to choose?");
+				table = sc.nextLine();
+			}
 			if(choice == 1)
 			{
 				
@@ -104,8 +97,9 @@ public class connection
 			}
 			if(choice == 2)
 			{
+				deleteRow.setString(1, table);
 				System.out.println("Please enter your where clause");
-				deleteRow.setString(1, sc.nextLine());
+				deleteRow.setString(2, sc.nextLine());
 				deleteRow.executeUpdate();
 			}
 			if(choice == 3)
@@ -146,6 +140,68 @@ public class connection
 						updatePriv.executeUpdate();
 						break;
 				}
+				if(choice == 4)
+				{
+					Statement stmt = conn.createStatement();
+					System.out.println("What would you like to view?");
+					System.out.println("1: Total Sales in Order");
+					System.out.println("2: Order Information");
+					System.out.println("3: Customer Orders");
+					System.out.println("4: Expense Report");
+					int choice4 = sc.nextInt();
+					switch(choice4)
+					{
+						case 1:
+							//total revenue from sale, employee number, customer id
+							//select saleValue, eid, custid from order;
+							ResultSet orderSales = stmt.executeQuery("select saleValue, eid, custid from order");
+							while(orderSales.next())
+							{
+								System.out.println(orderSales.getInt("saleValue") + " " + orderSales.getInt("eid") + " " + orderSales.getInt("custid")); 
+							}
+							break;
+						case 2:
+							//customer, models bought, quantity
+							//select customerID, saleValue, modelNumber, quantity from order;
+							ResultSet ordInfo = stmt.executeQuery("select customerID, saleValue, modelNumber, quantity from order");
+							while(ordInfo.next())
+							{
+								System.out.println(ordInfo.getInt("customerid") + " " + ordInfo.getInt("saleValue") + " " + ordInfo.getInt("modelNumber")+ " " + ordInfo.getInt("quantity"));
+							}
+							break;
+						case 3:
+							//each order, the parts, available inventory
+							//select Order.orderNumer, Order.modelNumber, Model.quantity from Order, Model where Order.modelNumber == Model.ModelNumber; 
+							ResultSet cusOrds = stmt.executeQuery("select Order.orderNumer, Order.modelNumber, Model.quantity from Order, Model where Order.modelNumber == Model.ModelNumber");
+							while(cusOrds.next())
+							{
+								System.out.println(cusOrds.getInt("Oder Number") + " " + cusOrds.getInt("Model Number") + " " + cusOrds.getInt("Quantity"));
+							}
+							break;
+						case 4:
+							//expense report, employee salary, bonus expense, part cost
+							// select sum(Employee.salary), sum(Model.cost * Model.quantity) from Employee, Model;
+							ResultSet totals = stmt.executeQuery("select sum(Employee.salary), sum(Model.cost * Model.quantity) from Employee, Model");
+							while(totals.next())
+							{
+								System.out.println(totals.getInt("Total Salry Cost") + " " + totals.getInt("Total Parts Cost"));
+							}
+							break;
+					}
+				}
+				else
+				{
+					System.out.println("Invalid Input, please try again:");
+				}
+				System.out.println("Would you like to make another choice?");
+				System.out.println("1: Yes");
+				System.out.println("2: No");
+				if(choice == 2)
+				{
+					flag = false;
+					System.out.println("Have a good day.");
+				}
+				
 				
 			}
 		}
