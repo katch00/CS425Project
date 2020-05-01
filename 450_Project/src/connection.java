@@ -64,7 +64,7 @@ public class connection
 			System.out.println("4: Reporting and Analytics");
 			int choice = sc.nextInt();
 			
-			if((choice == 1) || (choice == 2))
+			if((choice == 1) || (choice == 2) || (choice == 3))
 			{
 				sc.nextLine();
 				System.out.println("What table would you like to choose?");
@@ -148,43 +148,136 @@ public class connection
 			}
 			if(choice == 3)
 			{
-				System.out.println("Please enter the employee ID of you you would like to update:");
-				int eid = sc.nextInt();
-				System.out.println("Please choose what you wish to do:");
-				System.out.println("1: Update Salary");
-				System.out.println("2: Update Name");
-				System.out.println("3: Update Address");
-				System.out.println("4: Update privilege");
-				int choice2 = sc.nextInt();
-				System.out.println();
-				switch(choice2)
-				{
-					case 1:
-						System.out.println("What is the new salary?");
-						updateSal.setInt(1, sc.nextInt());
-						updateSal.setInt(2, eid);
-						updateSal.executeUpdate();
-						break;
-					case 2:
-						System.out.println("What is the new Name?");
-						updateName.setString(1, sc.nextLine());
-						updateName.setInt(2, eid);
-						updateName.executeUpdate();
-						break;
-					case 3:
-						System.out.println("What is the new address?");
-						updateAdd.setString(1, sc.nextLine());
-						updateAdd.setInt(2, eid);
-						updateAdd.executeUpdate();
-						break;
-					case 4:
-						System.out.println("What is the new privilege?");
-						updatePriv.setString(1, sc.nextLine());
-						updatePriv.setInt(2, eid);
-						updatePriv.executeUpdate();
-						break;
+				
+				switch(table) {
+				case "employee":
+					System.out.println("Please enter the employee ID of you you would like to update:");
+					int eid = sc.nextInt();
+					System.out.println("Please choose what you wish to do:");
+					System.out.println("1: Update Salary");
+					System.out.println("2: Update Name");
+					System.out.println("3: Update Address");
+					System.out.println("4: Update privilege");
+					int choice2 = sc.nextInt();
+					System.out.println();
+					switch(choice2)
+					{
+						case 1:
+							System.out.println("What is the new salary?");
+							updateSal.setInt(1, sc.nextInt());
+							updateSal.setInt(2, eid);
+							updateSal.executeUpdate();
+							break;
+						case 2:
+							System.out.println("What is the new Name?");
+							updateName.setString(1, sc.nextLine());
+							updateName.setInt(2, eid);
+							updateName.executeUpdate();
+							break;
+						case 3:
+							System.out.println("What is the new address?");
+							updateAdd.setString(1, sc.nextLine());
+							updateAdd.setInt(2, eid);
+							updateAdd.executeUpdate();
+							break;
+						case 4:
+							System.out.println("What is the new privilege?");
+							updatePriv.setString(1, sc.nextLine());
+							updatePriv.setInt(2, eid);
+							updatePriv.executeUpdate();
+							break;
+					}
+					break;
+				case "customer":
+					System.out.println("Please enter the customer ID of who you would like to update:");
+					int cid = sc.nextInt();
+					System.out.println("Please choose what you wish to do:");
+					System.out.println("1: Update First Name");
+					System.out.println("2: Update Last Name");
+					int choiceC = sc.nextInt();
+					System.out.println();
+					switch(choiceC)
+					{
+						case 1:
+							System.out.println("What is their new First Name?");
+							updateCFName.setString(1, sc.nextLine());
+							updateCFName.setInt(2, cid);
+							updateCFName.executeUpdate();
+							break;
+						case 2:
+							System.out.println("What is their new last Name?");
+							updateCLName.setString(1, sc.nextLine());
+							updateCLName.setInt(2, cid);
+							updateCLName.executeUpdate();
+							break;
+					}
+					break;
+				case "model":
+					System.out.println("Please enter the model number of what you would like to update:");
+					int modelid = sc.nextInt();
+					System.out.println("Please choose what you wish to do:");
+					System.out.println("1: Update the model name");
+					System.out.println("2: Update quantity");
+					System.out.println("3: Update sale price");
+					System.out.println("4: Update total cost");
+					int choiceMod = sc.nextInt();
+					System.out.println();
+					switch(choiceMod)
+					{
+						case 1:
+							System.out.println("What is the new name?");
+							updateMName.setString(1, sc.nextLine());
+							updateMName.setInt(2, modelid);
+							updateMName.executeUpdate();
+							break;
+						case 2:
+							System.out.println("What is the new sale price?");
+							updateSalePrice.setInt(1, sc.nextInt());
+							updateSalePrice.setInt(2, modelid);
+							updateSalePrice.executeUpdate();
+							break;
+						case 3:
+							System.out.println("What is the quantity?");
+							updatequant.setInt(1, sc.nextInt());
+							updatequant.setInt(2, modelid);
+							updatequant.executeUpdate();
+							break;
+						case 4:
+							System.out.println("What is the new cost?");
+							updateMName.setInt(1, sc.nextInt());
+							updateMName.setInt(2, modelid);
+							updateMName.executeUpdate();
+							break;
+					}
+					break;
+				case "order":
+					System.out.println("Please enter the order number of what you would like to update:");
+					int orderid = sc.nextInt();
+					System.out.println("Please choose what you wish to do:");
+					System.out.println("1: Update quanity");
+					System.out.println("2: Update sale value");
+					int choiceOrd = sc.nextInt();
+					System.out.println();
+					switch(choiceOrd)
+					{
+						case 1:
+							System.out.println("What is the new quantity?");
+							updateQuantity.setInt(1, sc.nextInt());
+							updateQuantity.setInt(2, orderid);
+							updateQuantity.executeUpdate();
+							break;
+						case 2:
+							System.out.println("What is the new sale value?");
+							updatesaleVal.setInt(1, sc.nextInt());
+							updatesaleVal.setInt(2, orderid);
+							updatesaleVal.executeUpdate();
+							break;
+					}
+					break;
+				
+					}
 				}
-			}
+				
 			if(choice == 4)
 			{
 				System.out.println("What would you like to view?");
