@@ -1,4 +1,3 @@
-package package1;
 
 import java.sql.*;
 import java.util.*;
@@ -28,15 +27,29 @@ public class connection
 		PreparedStatement insertEmp = conn.prepareStatement("insert into employee values(?, ?, ?, ?, ?, ?, ?, ?, ?);");
 		PreparedStatement insertModel = conn.prepareStatement("insert into model values(?, ?, ?, ?, ?);");
 		PreparedStatement insertOrder = conn.prepareStatement("insert into orderTable values(?,?,?,?,?,?);");
+		//select statement
 		PreparedStatement selectState = conn.prepareStatement("select ? from ? where ?;");
+		//deletion values
 		PreparedStatement deleteRowE = conn.prepareStatement("delete from employee where employeeid=?;");
 		PreparedStatement deleteRowC = conn.prepareStatement("delete from customer where customerid=?;");
 		PreparedStatement deleteRowM = conn.prepareStatement("delete from model where modelnumber=?;");
 		PreparedStatement deleteRowO = conn.prepareStatement("delete from orderTable where ordernumber=?;");
+		//update employee statements
 		PreparedStatement updateSal = conn.prepareStatement("update employee set salary = ? where employeeid=?;");
 		PreparedStatement updateName = conn.prepareStatement("update employee set name = ? where employeeid=?;");
 		PreparedStatement updateAdd= conn.prepareStatement("update employee set address = ? where employeeid=?;");
 		PreparedStatement updatePriv = conn.prepareStatement("update employee set privilege = ? where employeeid=?;");
+		//update model statements
+		PreparedStatement updateMName = conn.prepareStatement("update model set modelname = ? where modelnumber = ?");
+		PreparedStatement updateSalePrice = conn.prepareStatement("update model set saleprice = ? where modelnumber =?");
+		PreparedStatement updatequant = conn.prepareStatement("update model set totalNumber = ? where modelnumber =?");
+		PreparedStatement updateCost = conn.prepareStatement("update model set totalcost = ? where modelnumber = ?");
+		//update customer
+		PreparedStatement updateCFName = conn.prepareStatement("update customer set firstName = ? where customerID = ?");
+		PreparedStatement updateCLName = conn.prepareStatement("update customer set lastname = ? where customerID = ?");
+		//update order
+		PreparedStatement updateQuantity = conn.prepareStatement("update order set quantity = ? where ordernumber = ?");
+		PreparedStatement updatesaleVal = conn.prepareStatement("update order set salvevalue = ? where ordernumber = ?");
 		
 		
 		boolean flag = true;
@@ -186,18 +199,18 @@ public class connection
 					case 1:
 						//total revenue from sale, employee number, customer id
 						//select saleValue, eid, custid from order;
-						ResultSet orderSales = stmt.executeQuery("select saleValue, employeeidref, customeridref from orderTable");
+						ResultSet orderSales = stmt.executeQuery("select saleValue, employeeidref, customerid from customer, orderTable");
 						System.out.println("salevalue   employeeid   customerid ");
 						while(orderSales.next())
 						{
 							
-							System.out.println(orderSales.getInt("saleValue") + "                " + orderSales.getInt("employeeidref") + "             " + orderSales.getInt("customeridref")); 
+							System.out.println(orderSales.getInt("saleValue") + "                " + orderSales.getInt("employeeidref") + "             " + orderSales.getInt("customerid")); 
 						}
 						break;
 					case 2:
 						//customer, models bought, quantity
 						//select customerID, modelNumber, quantity from order;
-						ResultSet ordInfo = stmt.executeQuery("select customerIDref, modelNumber1, quantity from orderTable");
+						ResultSet ordInfo = stmt.executeQuery("select customerID, modelNumber1, quantity from customer, orderTable");
 						System.out.println("customerid    modelNumber    quantity");
 						while(ordInfo.next())
 						{
